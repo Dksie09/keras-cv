@@ -202,8 +202,11 @@ class NoiseScheduler:
         sqrt_one_minus_alpha_prod = tf.cast(sqrt_one_minus_alpha_prod, tf.float32)
     
         # Debugging: Print data types right before the multiplication
-        print("sqrt_alpha_prod dtype:", sqrt_alpha_prod.dtype)
-        print("original_samples dtype:", original_samples.dtype)
+        # Before the multiplication operation, print shapes:
+        print("original_samples shape:", original_samples.shape)
+        print("sqrt_alpha_prod shape:", sqrt_alpha_prod.shape)
+        print("noise shape:", noise.shape)
+        print("sqrt_one_minus_alpha_prod shape:", sqrt_one_minus_alpha_prod.shape)
         
         # Perform the operation with all tensors being of type float32
         noisy_samples = tf.cast(sqrt_alpha_prod, tf.float32) * tf.cast(original_samples, tf.float32) + tf.cast(sqrt_one_minus_alpha_prod, tf.float32) * noise
