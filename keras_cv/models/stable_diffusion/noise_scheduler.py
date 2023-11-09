@@ -189,28 +189,22 @@ class NoiseScheduler:
 
         return pred_prev_sample
 
-    def add_noise(
-        self,
-        original_samples,
-        noise,
-        timesteps,
-    ):
+    def add_noise(self, original_samples, noise, timesteps):
+        # Cast inputs to float32 to ensure type consistency
+        original_samples = tf.cast(original_samples, tf.float32)
+        noise = tf.cast(noise, tf.float32)
+    
         sqrt_alpha_prod = ops.take(self.alphas_cumprod, timesteps) ** 0.5
-        sqrt_one_minus_alpha_prod = (
-            1 - ops.take(self.alphas_cumprod, timesteps)
-        ) ** 0.5
-
-        for _ in range(3):
-            sqrt_alpha_prod = ops.expand_dims(sqrt_alpha_prod, axis=-1)
-            sqrt_one_minus_alpha_prod = ops.expand_dims(
-                sqrt_one_minus_alpha_prod, axis=-1
-            )
-
-        noisy_samples = (
-            sqrt_alpha_prod * original_samples
-            + sqrt_one_minus_alpha_prod * noise
-        )
+        sqrt_one_minus_alpha_prod = (1 - ops.take(self.alphas_cumprod, timesteps)) ** 0.5
+    
+        # Cast these as well to float32
+        sqrt_alpha_prod = tf.cast(sqrt_alpha_prod, tf.float32)
+        sqrt_one_minus_alpha_prod = tf.cast(sqrt_one_minus_alpha_prod, tf.float32)
+    
+        # Perform the operation with all tensors being of type float32
+        noisy_samples = sqrt_alpha_prod * original_samples + sqrt_one_minus_alpha_prod * noise
         return noisy_samples
+
 
     def __len__(self):
         return self.train_timesteps
