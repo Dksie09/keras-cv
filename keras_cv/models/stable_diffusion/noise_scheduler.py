@@ -200,6 +200,10 @@ class NoiseScheduler:
         # Cast these as well to float32
         sqrt_alpha_prod = tf.cast(sqrt_alpha_prod, tf.float32)
         sqrt_one_minus_alpha_prod = tf.cast(sqrt_one_minus_alpha_prod, tf.float32)
+
+        sqrt_alpha_prod = tf.reshape(sqrt_alpha_prod, (-1, 1, 1, 1))
+        sqrt_one_minus_alpha_prod = tf.reshape(sqrt_one_minus_alpha_prod, (-1, 1, 1, 1))
+
     
         # Debugging: Print data types right before the multiplication
         # Before the multiplication operation, print shapes:
