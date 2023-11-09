@@ -206,7 +206,7 @@ class NoiseScheduler:
         print("original_samples dtype:", original_samples.dtype)
         
         # Perform the operation with all tensors being of type float32
-        noisy_samples = sqrt_alpha_prod * original_samples + sqrt_one_minus_alpha_prod * noise
+        noisy_samples = tf.cast(sqrt_alpha_prod, tf.float32) * tf.cast(original_samples, tf.float32) + tf.cast(sqrt_one_minus_alpha_prod, tf.float32) * noise
         return noisy_samples
 
 
